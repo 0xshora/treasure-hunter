@@ -1,3 +1,16 @@
+# Treasure Hunt
+
+This is an implementation of Treasure Hunter, forking from paint application. We used [app_template](https://github.com/pixelaw/app_template).
+
+## Rule
+- Player can play as paint app.
+- However, player might hit a star when he/she is lucky. (1/1024)
+- The star will apear in the pixel as emoji.
+
+## TODO
+- Comment out `LastAttempt` features to defend from bots.
+
+---
 # PixeLAW App template
 This is a heavily WIP attempt to allow creation of PixeLAW apps without managing the main "game" repo.
 
