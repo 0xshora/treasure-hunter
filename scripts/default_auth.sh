@@ -21,13 +21,23 @@ echo " "
 echo actions : $ACTIONS_ADDRESS
 echo "---------------------------------------------------------------------------"
 
+if [ ! -f ./target/dev/manifest.json ]; then
+    echo "Error: manifest.json does not exist."
+    exit 1
+fi
+
 # enable system -> component authorizations
 COMPONENTS=($(cat ./target/dev/manifest.json | jq -r '.models[] | .name'))
 
+
 echo "Write permissions for ACTIONS"
-for component in ${COMPONENTS[@]}; do
-    sozo auth writer $component $ACTIONS_ADDRESS --world $WORLD_ADDRESS --rpc-url $RPC_URL
-done
+if [ ${#COMPONENTS[@]} -eq 0 ]; then
+    echo "Warning: No models found in manifest.json."
+else
+    for component in ${COMPONENTS[@]}; do
+        sozo auth writer $component $ACTIONS_ADDRESS --world $WORLD_ADDRESS --rpc-url $RPC_URL
+    done
+fi
 echo "Write permissions for ACTIONS: Done"
 
 echo "Initialize ACTIONS: Done"

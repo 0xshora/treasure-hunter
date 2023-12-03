@@ -15,13 +15,13 @@ mod tests {
     use dojo::test_utils::{spawn_test_world, deploy_contract};
 
     use myapp::app::{
-        myapp_actions, IMyAppActionsDispatcher, IMyAppActionsDispatcherTrait
+        treasure_hunt_actions, ITreasureHuntActionsDispatcher, ITreasureHuntActionsDispatcherTrait
     };
 
     use zeroable::Zeroable;
 
     // Helper function: deploys world and actions
-    fn deploy_world() -> (IWorldDispatcher, IActionsDispatcher, IMyAppActionsDispatcher) {
+    fn deploy_world() -> (IWorldDispatcher, IActionsDispatcher, ITreasureHuntActionsDispatcher) {
         // Deploy World and models
         let world = spawn_test_world(
             array![
@@ -39,9 +39,9 @@ mod tests {
         let core_actions = IActionsDispatcher { contract_address: core_actions_address };
 
         // Deploy MyApp actions
-        let myapp_actions_address = world
-            .deploy_contract('salt2', myapp_actions::TEST_CLASS_HASH.try_into().unwrap());
-        let myapp_actions = IMyAppActionsDispatcher { contract_address: myapp_actions_address };
+        let treasure_hunt_actions_address = world
+            .deploy_contract('salt2', treasure_hunt_actions::TEST_CLASS_HASH.try_into().unwrap());
+        let treasure_hunt_actions = ITreasureHuntActionsDispatcher { contract_address: treasure_hunt_actions_address };
 
         // Setup dojo auth
         world.grant_writer('Pixel', core_actions_address);
@@ -50,24 +50,27 @@ mod tests {
         world.grant_writer('CoreActionsAddress', core_actions_address);
         world.grant_writer('Permissions', core_actions_address);
 
-        (world, core_actions, myapp_actions)
+        // world.grant_writer('LastAttempt', treasure_hunt_actions_address);
+
+        (world, core_actions, treasure_hunt_actions)
     }
 
     #[test]
     #[available_gas(3000000000)]
-    fn test_myapp_actions() {
+    fn test_treasure_hunt_actions() {
+        'Running Treasure Hunt test'.print();
         // Deploy everything
-        let (world, core_actions, myapp_actions) = deploy_world();
+        let (world, core_actions, treasure_hunt_actions) = deploy_world();
 
         core_actions.init();
-        myapp_actions.init();
+        treasure_hunt_actions.init();
 
         let player1 = starknet::contract_address_const::<0x1337>();
         starknet::testing::set_account_contract_address(player1);
 
         let color = encode_color(1, 1, 1);
 
-        myapp_actions
+        treasure_hunt_actions
             .interact(
                 DefaultParameters {
                     for_player: Zeroable::zero(),
@@ -78,7 +81,10 @@ mod tests {
             );
 
         let pixel_1_1 = get!(world, (1, 1), (Pixel));
+        
         assert(pixel_1_1.color == color, 'should be the color');
+
+        assert(pixel_1_1.text == '', 'should be None(1023/1024)');
 
         'Passed test'.print();
     }
