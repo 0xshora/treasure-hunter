@@ -31,6 +31,7 @@ upload_manifest_zsh = "zsh ./scripts/upload_manifest.sh"
 
 [tool.dojo.env]
 rpc_url = "http://localhost:5050/"
+# rpc_url = "https://<rpc-url>"
 
 account_address = "0x1275bf6bbde224b361455d990c089bfb05a5711aa90ec7ccb3d4e0ee9265b4e"
 private_key = "0x23ca81e30674f67a3cdbd8aec702aa2715c28f5ede99b360c4061f65e731fce"

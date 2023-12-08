@@ -92,7 +92,7 @@ mod treasure_hunt_actions {
                 .update_permission(
                     'snake',
                     Permission {
-                        alert: false,
+                        // alert: false,
                         app: false,
                         color: true,
                         owner: false,
@@ -106,7 +106,7 @@ mod treasure_hunt_actions {
                 .update_permission(
                     'paint',
                     Permission {
-                        alert: false,
+                        // alert: false,
                         app: false,
                         color: true,
                         owner: false,
@@ -182,7 +182,7 @@ mod treasure_hunt_actions {
                         x: position.x,
                         y: position.y,
                         color: Option::Some(default_params.color),
-                        alert: Option::None, // TODO: implement alert
+                        // alert: Option::None, // TODO: implement alert
                         timestamp: Option::None,
                         text: text,
                         app: Option::Some(system),
